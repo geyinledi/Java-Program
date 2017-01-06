@@ -1,0 +1,26 @@
+<!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator 1.0.2//EN" "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+
+<validators>
+    <field name="username">
+        <field-validator type="requiredstring">
+            <message>请输入用户名!</message><!--出错提示信息-->
+        </field-validator>
+    </field>
+    <field name="password">
+        <field-validator type="requiredstring">
+           <message>请输入密码!</message><!--出错提示信息-->
+        </field-validator>
+	   <!--限制字符串长短验证-->
+		<field-validator type="stringlength">
+            <param name="trim">true</param><!--是否去除空格-->
+            <param name="minLength">4</param><!--最小长度-->
+            <param name="maxLength">10</param><!--最大长度-->
+            <message>请设置4-10位长度的密码!</message><!--出错提示信息-->
+        </field-validator>
+    </field>
+    <field name="email">
+        <field-validator type="requiredstring">
+            <message>请输入邮箱!</message><!--出错提示信息-->
+        </field-validator>
+    </field>
+</validators>

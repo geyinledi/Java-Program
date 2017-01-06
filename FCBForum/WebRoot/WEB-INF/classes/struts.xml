@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+    <constant name="struts.enable.DynamicMethodInvocation" value="false" />
+    <constant name="struts.custom.i18n.resources" value="login"/>
+    <constant name="struts.devMode" value="true" />
+	 <constant name="struts.custom.i18n.resources" value="login"/>	
+    <!-- Add packages here-->
+	<package name="org.web" extends="struts-default"> 		  	
+	    <interceptors>
+			<interceptor name="Authentication"  class="org.web.interceptor.AuthenticationInterceptor" />
+			<interceptor-stack name="NoticeAuthenticationStack">
+				<interceptor-ref name="createSession" />
+				<interceptor-ref name="exception"/>
+                <interceptor-ref name="alias"/>
+                <interceptor-ref name="servlet-config"/>
+                <interceptor-ref name="prepare"/>
+                <interceptor-ref name="i18n"/>
+                <interceptor-ref name="chain"/>
+                <interceptor-ref name="debugging"/>
+                <interceptor-ref name="model-driven"/>
+                <interceptor-ref name="fileUpload"/>
+                <interceptor-ref name="static-params"/>
+                <interceptor-ref name="params"/>
+                <interceptor-ref name="conversionError"/>
+                <interceptor-ref name="validation">
+                    <param name="excludeMethods">input,back,cancel,browse</param>
+                </interceptor-ref>
+                <interceptor-ref name="workflow">
+                    <param name="excludeMethods">input,back,cancel,browse</param>
+                </interceptor-ref>
+                <interceptor-ref name="Authentication" />
+			</interceptor-stack>								
+		</interceptors> 
+		
+		<action name="AdminLogin" class="org.web.admin.AdminLoginActionWeb31">
+		      <result name="success" type="redirect">/admin/adminframeWeb31.jsp</result>
+		      <result name="input">/admin/adminloginWeb31.jsp</result>
+		</action>
+		
+		<action name="AdminLogout" class="org.web.admin.AdminLogoutActionWeb31">
+		      <result name="input">/admin/adminloginWeb31.jsp</result>
+		</action>
+		<action name="AdminLoginWeb31" class="org.web.admin.AdminLoginActionWeb31" method="execute1">
+		</action>
+        
+        <!-- 使用*通配符方式匹配save，list，edit方法 -->       
+        <action name="User*" class="org.web.admin.UserManagerActionWeb31" method="{1}">
+              <result name="success" type="redirect">/admin/Userlist.action</result>
+              <result name="list">/admin/usermanagerWeb31.jsp</result>
+              <result name="edit">/admin/usereditWeb31.jsp</result>
+              <result name="add" type="redirect">/admin/Userlist.action</result>
+              <result name="register">/user/userloginWeb31.jsp</result>
+        </action>      
+		 
+		   <action name="login1" class="org.web.admin.AdminLoginActionWeb31" method="execute1">  
+            <result name="success">/adminindexWeb31.jsp/</result>  
+		 </action>
+		 
+		 
+		<action name="UserLogin" class="org.web.user.UserLoginActionWeb31">
+		      <result name="success" type="redirect">/user/IndexBBS.action</result>
+		      <result name="input">/user/userloginWeb31.jsp</result>
+		</action>
+		
+		<action name="UserLogout" class="org.web.user.UserLogoutActionWeb31">
+		      <result name="input">/user/userloginWeb31.jsp</result>
+		</action>
+		
+		<!-- 使用*通配符方式匹配save，list，edit方法 -->       
+        <action name="Forum*" class="org.web.admin.ForumManagerActionWeb31" method="{1}">
+              <result name="success" type="redirect">/admin/Forumlist.action</result>
+              <result name="list">/admin/forummanagerWeb31.jsp</result>
+              <result name="edit">/admin/forumeditWeb31.jsp</result>
+        </action>   
+        
+        <action name="Topic*" class="org.web.user.TopicManagerActionWeb31" method="{1}">
+              <!-- 转到动态路径，参数取forumid -->
+              <result name="success" type="redirect-action">TopiclistByForum?id=${forumid}</result>              
+              <result name="admin" type="redirect">/admin/Topiclist.action</result>
+              <result name="list">/admin/topicmanagerWeb31.jsp</result>
+              <result name="edit">/admin/forumeditWeb31.jsp</result> 
+              <result name="topic">/user/topiclistWeb31.jsp</result>        
+              <result name="add">/user/newarticleWeb31.jsp</result>
+        </action> 
+        <action name="topicList" class="org.web.user.TopicManagerActionWeb31" method="listByForum">
+        	<result name="topic">/user/topiclistWeb31.jsp</result>
+        </action>
+        <action name="Response*" class="org.web.user.ResponseManagerActionWeb31" method="{1}">
+              <!-- 转到动态路径，参数取topicid -->
+              <result name="success" type="redirect-action">Responselist?id=${topicid}</result>        
+              <result name="list">/user/responselistWeb31.jsp</result>
+              <result name="add">/user/newresponseWeb31.jsp</result>
+        </action>
+        
+        <action name="IndexBBS" class="org.web.user.IndexBBSActionWeb31" method="list">
+		      <result name="success">/user/bbsindexWeb31.jsp</result>
+		</action>
+		           
+        <!--如果我们没有给action元素指定class属性的话，框架会默认它的class属性为com.opensymphony.xwork.ActionSupport，如果想指定别的类作为默认的Action类，可以通过package的default-action-ref属性来设置。在设置了default-action-ref之后，如果我们在package中没有匹配到所请求的action，那么这个默认的action就会被调用。一般一个命名空间下最好只定义一个默认的action。 -->
+    </package>
+</struts>
